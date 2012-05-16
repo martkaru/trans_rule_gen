@@ -1,7 +1,3 @@
-require "rubygems"
-require "bundler/setup"
-Bundler.require(:default)
-
 class Matches
   attr_accessor :matches
 
