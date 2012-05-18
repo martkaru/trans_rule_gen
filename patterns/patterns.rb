@@ -17,3 +17,17 @@ class Pattern
   end
 end
 
+class TextBoxDatePattern < Pattern
+end
+
+class MultiTextBoxDatePattern < Pattern
+end
+
+class MultiSelectDatePattern < Pattern
+end
+
+class SingleMonthCalendarPattern < Pattern
+end
+
+class SingleYearCalendarPattern < Pattern
+end
