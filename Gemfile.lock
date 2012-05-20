@@ -1,6 +1,6 @@
 GIT
-  remote: git://github.com/Codalytics/ruleby.git
-  revision: c0764570ef85e8d714462942c686047854340256
+  remote: git://github.com/martkaru/ruleby.git
+  revision: 2f2267f28d1862e23a9aa634c955d8aa20574016
   branch: new_dsl
   specs:
     ruleby (0.9.b7)
