@@ -15,6 +15,10 @@ class Pattern
   def build_transformation_rule(model_instance)
     Transformation.new
   end
+
+  def to_s
+    "#{self.class}"
+  end
 end
 
 class TextBoxDatePattern < Pattern

@@ -10,11 +10,19 @@ class Matches
   end
 
   def matches_for(element)
-    @matches[element]
+    @matches[element].sort_by(&:rank)
   end
 
   def best_match_for(element)
-    matches_for(element).sort_by(:rank)
+    matches_for(element).first
+  end
+
+  def print_ranks
+    @matches.each do |element, element_matches|
+      element_matches.each do |em|
+        puts em
+      end
+    end
   end
 end
 
@@ -31,20 +39,54 @@ class Match
   def decrease_rank(amount = -1)
     @rank -= amount
   end
+
+  def to_s
+    "#{model_instance} : #{pattern} : #{rank}"
+  end
 end
 
 class PatternRules < Ruleby::Rulebook
   def rules
     name :match_input_elements
-    rule [DateEntryField, :m],
+    rule [UiModel::DateEntryField, :m],
          [TextBoxDatePattern, :p],
          [Matches, :ms] do |v|
       assert(match = Match.new(v[:m], v[:p], 0))
       v[:ms].add(v[:m], match)
     end
 
-    name :evaluate_pattern_match
-    rule [Match, :m, where{ (self.pattern.class == TextBoxDatePattern) && (self.model_instance.class == DateEntryField) }] do |v|
+    rule [Match, :m, where{
+        (self.pattern.class == TextBoxDatePattern) &&
+        (self.model_instance.class == UiModel::DateEntryField) }
+    ] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Match, :m, where{
+        (self.pattern.class == MultiTextBoxDatePattern) &&
+        (self.model_instance.class == UiModel::DateEntryField) }
+    ] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Match, :m, where{
+        (self.pattern.class == MultiSelectDatePattern) &&
+        (self.model_instance.class == UiModel::DateEntryField) }
+    ] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Match, :m, where{
+        (self.pattern.class == SingleMonthCalendarPattern) &&
+        (self.model_instance.class == UiModel::DateEntryField) }
+    ] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Match, :m, where{
+        (self.pattern.class == SingleYearCalendarPattern) &&
+        (self.model_instance.class == UiModel::DateEntryField) }
+    ] do |v|
       v[:m].increase_rank
     end
   end
