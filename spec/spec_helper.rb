@@ -1,12 +1,5 @@
-require "rubygems"
-require "bundler/setup"
-Bundler.require(:default)
 require 'rspec'
-
-require './models/ui_model.rb'
-require './models/web_ui_model.rb'
-require './patterns/patterns.rb'
-require './lib/pattern_evaluator.rb'
+require './trans_rule_gen'
 
 RSpec.configure do |c|
   c.mock_with :rspec

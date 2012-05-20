@@ -23,7 +23,7 @@ def build_patterns
 end
 
 describe PatternEvaluator do
-  subject { PatternEvaluator.new }
+  subject { PatternEvaluator.new(PatternRules) }
   let(:model) { build_model }
   let(:patterns) { build_patterns }
 
