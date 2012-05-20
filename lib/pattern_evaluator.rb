@@ -52,11 +52,12 @@ class PatternEvaluator
     @rules_class = rules_class
   end
 
-  def run(models, patterns)
+  def run(models, patterns, constraints)
     ctx = Matches.new
     engine :engine do |e|
       @rules_class.new(e).rules
       e.assert(ctx)
+      e.assert(constraints)
       models.each { |m| e.assert m }
       patterns.each { |p| e.assert p }
       e.match

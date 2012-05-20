@@ -8,7 +8,24 @@ class PatternRules < Ruleby::Rulebook
       v[:ms].add(v[:m], match)
     end
 
-    rule [Match, :m, where{
+    rule [Constraints::Constraint, :c, where{ self.view_port_size.between?(0,29) }],
+      [Match, :m, where{
+        (self.pattern.class == TextBoxDatePattern) &&
+        (self.model_instance.class == UiModel::DateEntryField) }
+    ] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Constraints::Constraint, :c, where{ self.view_port_size.between?(30,75) }],
+      [Match, :m, where{
+        (self.pattern.class == TextBoxDatePattern) &&
+        (self.model_instance.class == UiModel::DateEntryField) }
+    ] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Constraints::Constraint, :c, where{ self.view_port_size.between?(76,100) }],
+      [Match, :m, where{
         (self.pattern.class == TextBoxDatePattern) &&
         (self.model_instance.class == UiModel::DateEntryField) }
     ] do |v|

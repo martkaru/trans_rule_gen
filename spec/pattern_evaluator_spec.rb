@@ -7,11 +7,6 @@ def build_model
   elements
 end
 
-def build_constraints
-  constraints = []
-  constraints
-end
-
 def build_patterns
   patterns = []
   patterns << TextBoxDatePattern.new(:for => UiModel::DateEntryField)
@@ -26,21 +21,120 @@ describe PatternEvaluator do
   subject { PatternEvaluator.new(PatternRules) }
   let(:model) { build_model }
   let(:patterns) { build_patterns }
+  let(:constraints) { Constraints::Constraint.new(
+                      :view_port_size => 50,
+                      :user_skill_level => 50
+                    )}
 
-  it "should generate no matches if no input is given" do
-    subject.run([], []).matches.should be_empty
+  def run
+    subject.run(model, patterns, constraints)
   end
 
-  it "should generate no matches, if no patterns are given" do
-    subject.run(model, []).matches.should be_empty
+  def best_match_for(e)
+    run.best_match_for(e)
   end
 
-  it "should generate no matches, if no model elements are given" do
-    subject.run([], patterns).matches.should be_empty
+  context "without constraints" do
+    it "should generate no matches if no input is given" do
+      subject.run([], [], []).matches.should be_empty
+    end
+
+    it "should generate no matches, if no patterns are given" do
+      subject.run(model, [], []).matches.should be_empty
+    end
+
+    it "should generate no matches, if no model elements are given" do
+      subject.run([], patterns, []).matches.should be_empty
+    end
+
+    it "should find match for each model element" do
+      subject.run(model, patterns, []).matches.size.should == model.size
+    end
   end
 
-  it "should find match for each model element" do
-    subject.run(model, patterns).matches.size.should == model.size
+  context "with large viewport size" do
+    before(:each) do
+      constraints.view_port_size = 90
+    end
+
+    context "with expert user skill level" do
+      before(:each) do
+        constraints.user_skill_level = 90
+      end
+
+      it "should select a pattern" do
+        best_match_for(model.first).pattern.class == TextBoxDatePattern
+      end
+
+    end
+
+    context "with average user skill level" do
+      before(:each) do
+        constraints.user_skill_level = 50
+      end
+
+    end
+
+    context "with novice user skill level" do
+      before(:each) do
+        constraints.user_skill_level = 10
+      end
+
+    end
+  end
+
+  context "with medium viewport size" do
+    before(:each) do
+      constraints.view_port_size = 50
+    end
+
+    context "with expert user skill level" do
+      before(:each) do
+        constraints.user_skill_level = 90
+      end
+
+    end
+
+    context "with average user skill level" do
+      before(:each) do
+        constraints.user_skill_level = 50
+      end
+
+    end
+
+    context "with novice user skill level" do
+      before(:each) do
+        constraints.user_skill_level = 10
+      end
+
+    end
+  end
+
+  context "with small viewport size" do
+    before(:each) do
+      constraints.view_port_size = 20
+    end
+
+    context "with expert user skill level" do
+      before(:each) do
+        constraints.user_skill_level = 90
+      end
+
+    end
+
+    context "with average user skill level" do
+      before(:each) do
+        constraints.user_skill_level = 50
+      end
+
+    end
+
+    context "with novice user skill level" do
+      before(:each) do
+        constraints.user_skill_level = 10
+      end
+
+    end
   end
 
 end
