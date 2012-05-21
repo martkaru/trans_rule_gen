@@ -1,30 +1,10 @@
 require 'spec_helper'
 
-def build_model
-  elements = []
-  elements << UiModel::DateEntryField.new(:name => 'from')
-  #elements << UiModel::DateEntryField.new(:name => 'to')
-  elements
-end
-
-def build_patterns
-  patterns = []
-  patterns << TextBoxDatePattern.new(:for => UiModel::DateEntryField)
-  patterns << MultiTextBoxDatePattern.new(:for => UiModel::DateEntryField)
-  patterns << MultiSelectDatePattern.new(:for => UiModel::DateEntryField)
-  patterns << SingleMonthCalendarPattern.new(:for => UiModel::DateEntryField)
-  patterns << SingleYearCalendarPattern.new(:for => UiModel::DateEntryField)
-  patterns
-end
-
 describe PatternEvaluator do
   subject { PatternEvaluator.new(PatternRules) }
-  let(:model) { build_model }
-  let(:patterns) { build_patterns }
-  let(:constraints) { Constraints::Constraint.new(
-                      :view_port_size => 50,
-                      :user_skill_level => 50
-                    )}
+  let(:model) { Factory.build_model }
+  let(:patterns) { Factory.build_patterns }
+  let(:constraints) { Factory.build_constraints }
 
   def run
     subject.run(model, patterns, constraints)
