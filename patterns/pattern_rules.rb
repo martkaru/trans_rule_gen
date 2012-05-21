@@ -1,62 +1,128 @@
 class PatternRules < Ruleby::Rulebook
   def rules
     name :match_input_elements
-    rule [UiModel::DateEntryField, :m],
-         [TextBoxDatePattern, :p],
-         [Matches, :ms] do |v|
-      assert(match = Match.new(v[:m], v[:p], 0))
-      v[:ms].add(v[:m], match)
-    end
 
+    [TextBoxDatePattern, MultiTextBoxDatePattern, MultiSelectDatePattern,
+       SingleMonthCalendarPattern, SingleYearCalendarPattern].each do |pattern_klass|
+          rule [UiModel::DateEntryField, :m],
+               [pattern_klass, :p],
+               [Matches, :ms] do |v|
+            assert(match = Match.new(v[:m], v[:p], 0))
+            v[:ms].add(v[:m], match)
+          end
+       end
+
+    name :small_viewport_textbox
     rule [Constraints::Constraint, :c, where{ self.view_port_size.between?(0,29) }],
       [Match, :m, where{
-        (self.pattern.class == TextBoxDatePattern) &&
-        (self.model_instance.class == UiModel::DateEntryField) }
-    ] do |v|
+        self.pattern_name == 'TextBoxDatePattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
+      v[:m].increase_rank
+    end
+
+    name :small_viewport_multiselect
+    rule [Constraints::Constraint, :c, where{ self.view_port_size.between?(0,29) }],
+       [Match, :m, where{
+        self.pattern_name == 'MultiSelectDatePattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
       v[:m].increase_rank
     end
 
     rule [Constraints::Constraint, :c, where{ self.view_port_size.between?(30,75) }],
-      [Match, :m, where{
-        (self.pattern.class == TextBoxDatePattern) &&
-        (self.model_instance.class == UiModel::DateEntryField) }
-    ] do |v|
+       [Match, :m, where{
+        self.pattern_name == 'MultiTextBoxDatePattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Constraints::Constraint, :c, where{ self.view_port_size.between?(30,75) }],
+       [Match, :m, where{
+        self.pattern_name == 'SingleMonthCalendarPattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
       v[:m].increase_rank
     end
 
     rule [Constraints::Constraint, :c, where{ self.view_port_size.between?(76,100) }],
+       [Match, :m, where{ 
+          self.pattern_name == 'MultiTextBoxDatePattern'
+          self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Constraints::Constraint, :c, where{ self.view_port_size.between?(76,100) }],
+       [Match, :m, where{
+        self.pattern_name == 'SingleMonthCalendarPattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Constraints::Constraint, :c, where{ self.view_port_size.between?(76,100) }],
+       [Match, :m, where{
+        self.pattern_name == 'SingleYearCalendarPattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Constraints::Constraint, :c, where{ self.user_skill_level.between?(0,32) }],
       [Match, :m, where{
-        (self.pattern.class == TextBoxDatePattern) &&
-        (self.model_instance.class == UiModel::DateEntryField) }
-    ] do |v|
+        self.pattern_name == 'MultiSelectDatePattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
       v[:m].increase_rank
     end
 
-    rule [Match, :m, where{
-        (self.pattern.class == MultiTextBoxDatePattern) &&
-        (self.model_instance.class == UiModel::DateEntryField) }
-    ] do |v|
+    rule [Constraints::Constraint, :c, where{ self.user_skill_level.between?(0,32) }],
+      [Match, :m, where{
+        self.pattern_name == 'SingleMonthCalendarPattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
       v[:m].increase_rank
     end
 
-    rule [Match, :m, where{
-        (self.pattern.class == MultiSelectDatePattern) &&
-        (self.model_instance.class == UiModel::DateEntryField) }
-    ] do |v|
+    rule [Constraints::Constraint, :c, where{ self.user_skill_level.between?(0,32) }],
+      [Match, :m, where{
+        self.pattern_name == 'SingleYearCalendarPattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
       v[:m].increase_rank
     end
 
-    rule [Match, :m, where{
-        (self.pattern.class == SingleMonthCalendarPattern) &&
-        (self.model_instance.class == UiModel::DateEntryField) }
-    ] do |v|
+    rule [Constraints::Constraint, :c, where{ self.user_skill_level.between?(33,65) }],
+      [Match, :m, where{
+        self.pattern_name == 'MultiSelectDatePattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
       v[:m].increase_rank
     end
 
-    rule [Match, :m, where{
-        (self.pattern.class == SingleYearCalendarPattern) &&
-        (self.model_instance.class == UiModel::DateEntryField) }
-    ] do |v|
+    rule [Constraints::Constraint, :c, where{ self.user_skill_level.between?(33,65) }],
+      [Match, :m, where{
+        self.pattern_name == 'SingleMonthCalendarPattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Constraints::Constraint, :c, where{ self.user_skill_level.between?(66,100) }],
+      [Match, :m, where{
+        self.pattern_name == 'TextBoxDatePattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
+      v[:m].increase_rank
+    end
+
+    rule [Constraints::Constraint, :c, where{ self.user_skill_level.between?(66,100) }],
+      [Match, :m, where{
+        self.pattern_name == 'MultiTextBoxDatePattern'
+        self.model_instance_class_name == 'UiModel::DateEntryField'
+    }] do |v|
       v[:m].increase_rank
     end
   end

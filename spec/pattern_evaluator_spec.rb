@@ -3,7 +3,7 @@ require 'spec_helper'
 def build_model
   elements = []
   elements << UiModel::DateEntryField.new(:name => 'from')
-  elements << UiModel::DateEntryField.new(:name => 'to')
+  #elements << UiModel::DateEntryField.new(:name => 'to')
   elements
 end
 
@@ -61,25 +61,21 @@ describe PatternEvaluator do
       before(:each) do
         constraints.user_skill_level = 90
       end
-
-      it "should select a pattern" do
-        best_match_for(model.first).pattern.class == TextBoxDatePattern
-      end
-
+      specify { best_match_for(model.first).pattern.should be_kind_of(MultiTextBoxDatePattern) }
     end
 
     context "with average user skill level" do
       before(:each) do
         constraints.user_skill_level = 50
       end
-
+      specify { best_match_for(model.first).pattern.should be_kind_of(SingleMonthCalendarPattern) }
     end
 
     context "with novice user skill level" do
       before(:each) do
         constraints.user_skill_level = 10
       end
-
+      specify { best_match_for(model.first).pattern.should be_kind_of(SingleYearCalendarPattern) }
     end
   end
 
@@ -92,21 +88,21 @@ describe PatternEvaluator do
       before(:each) do
         constraints.user_skill_level = 90
       end
-
+      specify { best_match_for(model.first).pattern.should be_kind_of(MultiTextBoxDatePattern) }
     end
 
     context "with average user skill level" do
       before(:each) do
         constraints.user_skill_level = 50
       end
-
+      specify { best_match_for(model.first).pattern.should be_kind_of(SingleMonthCalendarPattern) }
     end
 
     context "with novice user skill level" do
       before(:each) do
         constraints.user_skill_level = 10
       end
-
+      specify { best_match_for(model.first).pattern.should be_kind_of(SingleMonthCalendarPattern) }
     end
   end
 
@@ -119,21 +115,21 @@ describe PatternEvaluator do
       before(:each) do
         constraints.user_skill_level = 90
       end
-
+      specify { best_match_for(model.first).pattern.should be_kind_of(TextBoxDatePattern) }
     end
 
     context "with average user skill level" do
       before(:each) do
         constraints.user_skill_level = 50
       end
-
+      specify { best_match_for(model.first).pattern.should be_kind_of(MultiSelectDatePattern) }
     end
 
     context "with novice user skill level" do
       before(:each) do
         constraints.user_skill_level = 10
       end
-
+      specify { best_match_for(model.first).pattern.should be_kind_of(MultiSelectDatePattern) }
     end
   end
 

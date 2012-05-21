@@ -19,6 +19,10 @@ class Pattern
   def to_s
     "#{self.class}"
   end
+
+  def is?
+    throw self
+  end
 end
 
 class TextBoxDatePattern < Pattern
