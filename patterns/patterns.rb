@@ -1,4 +1,4 @@
-class Transformation
+class TransformationRule
 end
 
 class Pattern
@@ -12,30 +12,41 @@ class Pattern
     @mapped_to = opts[:for]
   end
 
-  def build_transformation_rule(model_instance)
-    Transformation.new
+  def build_transformation_rule
+    lambda{|model_instance| target_class_name.new(:name => model_instance.name)}
   end
 
   def to_s
     "#{self.class}"
   end
-
-  def is?
-    throw self
-  end
 end
 
 class TextBoxDatePattern < Pattern
+  def target_class_name
+    WebModel::TextBox
+  end
 end
 
 class MultiTextBoxDatePattern < Pattern
+  def target_class_name
+    WebModel::MultiTextBoxDate
+  end
 end
 
 class MultiSelectDatePattern < Pattern
+  def target_class_name
+    WebModel::MultiSelectBoxDate
+  end
 end
 
 class SingleMonthCalendarPattern < Pattern
+  def target_class_name
+    WebModel::SingleMonthCalendar
+  end
 end
 
 class SingleYearCalendarPattern < Pattern
+  def target_class_name
+    WebModel::SingleYearCalendar
+  end
 end
