@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/martkaru/ruleby.git
-  revision: 2f2267f28d1862e23a9aa634c955d8aa20574016
+  revision: 0162f8c7f18709c547e8a7d4c6de2016e2697c9b
   branch: new_dsl
   specs:
     ruleby (0.9.b7)

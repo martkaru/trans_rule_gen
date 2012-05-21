@@ -1,4 +1,4 @@
 source :rubygems
 
 gem 'rspec'
-gem 'ruleby', :git => 'git://github.com/martkaru/ruleby.git', :branch => 'new_dsl'
+gem 'ruleby', :branch => 'new_dsl', :git => 'git://github.com/martkaru/ruleby.git'
