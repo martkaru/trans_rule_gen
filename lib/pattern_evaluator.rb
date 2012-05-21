@@ -27,11 +27,9 @@ class Matches
 end
 
 class Match
-  attr_accessor :model_instance, :pattern, :rank, :pattern_name, :model_instance_class_name
+  attr_accessor :model_instance, :pattern, :rank
   def initialize(*args)
     @model_instance, @pattern, @rank = *args
-    @pattern_name = @pattern.class.to_s
-    @model_instance_class_name = @model_instance.class.to_s
   end
 
   def increase_rank(amount = 1)
