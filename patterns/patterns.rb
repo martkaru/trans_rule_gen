@@ -1,12 +1,5 @@
-class TransformationRule
-end
-
 class Pattern
-  attr_accessor :usability_rank,
-                :estimated_width,
-                :estimated_height,
-                :name,
-                :mapped_to
+  attr_accessor :name
 
   def initialize(opts)
     @mapped_to = opts[:for]
